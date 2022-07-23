@@ -28,7 +28,29 @@ const getAllPsicologos = async(req, res) => {
     }
 }
 
+const findPsicologoById = async (req, res) =>{
+    try{
+        const findPsicologo = await PsicologoModel.findById(req.params.id)
+        res.status(200).json(findPsicologo)
+    } catch (error){
+        console.error(error)
+        res.status(500).json({ message:error.message})
+    }
+}
+
+const findPsicologoByEstado = async (req, res) =>{
+    try{
+      const { estado } = req.query;
+      const findEstado = await PsicologoModel.find({ estado: estado});
+      res.status(200).json(findEstado)
+    } catch (err) {
+      res.status(500).send({ message: err.message})    
+    }
+}
+
 module.exports = {
     createPsicologo,
-    getAllPsicologos
+    getAllPsicologos,
+    findPsicologoById,
+    findPsicologoByEstado
 }
