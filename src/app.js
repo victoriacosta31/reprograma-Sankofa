@@ -17,6 +17,6 @@ app.use(cors())
 
 mongoose.connect()
 
-app.use(psicologosRoutes)
+app.use("/sankofa", psicologosRoutes)
 
 module.exports = app
