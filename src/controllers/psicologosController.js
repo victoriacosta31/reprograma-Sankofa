@@ -48,9 +48,49 @@ const findPsicologoByEstado = async (req, res) =>{
     }
 }
 
+const findPsicologoByCidade = async (req, res) =>{
+    try{
+      const { cidade }  = req.query;
+      const findCidade = await PsicologoModel.find({ cidade: cidade});
+      res.status(200).json(findCidade)
+    } catch (err){
+      res.status(500).send({ message: err.message})  
+    }
+}
+
+const updatePsicologo = async (req, res) => {
+    try{
+        const {nome, telefone, estado, cidade, email} = req.body;
+        const updatedPsicologo = await PsicologoModel.findByIdAndUpdate(req.params.id, {
+            nome, telefone, estado, cidade, email
+        })
+        const psicologoUpdated = await PsicologoModel.findByIdAndUpdate(req.params.id)
+        res.status(200).json(psicologoUpdated)
+        } catch (error){
+        console.error(error)
+        res.status(500).json({ message: error.message})    
+        }
+    }
+
+const deletePsicologo = async (req, res) => {
+    try{
+        const { id } = req.params
+        await PsicologoModel.findByIdAndDelete(id)
+        const message = `O Psicologo com a id ${id} foi deletado`
+        res.status(200).json({ message })
+    } catch(error){
+        console.error(error)
+        res.status(500).json({ message:error.message})
+    }
+}    
+
+
 module.exports = {
     createPsicologo,
     getAllPsicologos,
     findPsicologoById,
-    findPsicologoByEstado
+    findPsicologoByEstado,
+    findPsicologoByCidade,
+    updatePsicologo,
+    deletePsicologo
 }
